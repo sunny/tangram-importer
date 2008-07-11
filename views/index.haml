@@ -1,0 +1,9 @@
+%div
+  %h1 Tangram Contacts
+  %p
+    Supported:
+    %ul
+    - @apps.each do |app|
+      %li
+        %a{:href => "#{app}?#{@return_to}"}= app
+
