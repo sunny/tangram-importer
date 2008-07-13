@@ -28,7 +28,14 @@ module Tangram
 
       def contacts
         result = parse fetch
-        return result.to_yaml
+        case @options[:format]
+          when :xml
+            return "<contacts>"+result.map{|e|"<email>#{e}</email>"}.join+"</contacts>"
+          when :csv
+            return result.join(',')
+          else
+            return result.to_yaml
+        end
       end
     end
   
