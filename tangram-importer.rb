@@ -1,18 +1,4 @@
 #!/usr/bin/ruby
-# The plan is to be able to import contacts from a variety of places without
-# using a password.
-#
-# For that an example.com website could tells its users to click on :
-# http://tangram.example.com/contacts/yahoo?format=yml&return_to=http://example.com/return-url
-#
-# Tangram-contacts then takes the user by the hand, redirecting on the website,
-# or finding the publicly avaible information and POSTs the result on the given
-# return_to URI, in the given format (yml, xml, csv).
-#
-# To launch a development app, type:
-#   ruby tangram-importer.rb
-# Then try it out at:
-#   http://localhost:4567/?return_to=http://localhost:4567/implementation-test
 
 require "rubygems"
 require "sinatra"
@@ -45,6 +31,7 @@ post "/implementation-test" do
   open('/tmp/tangram.txt', 'w') do |f|
     f << params[:data]
   end
+  "Done!"
 end
 
 
@@ -54,9 +41,9 @@ get '/:app/done' do
   app = Tangram::ContactGetter.new_app(params)
   contacts = app.contacts
   
-  # POSTs then redirects
-  res = Net::HTTP.post_form(URI.parse(params[:return_to]),
+  Net::HTTP.post_form(URI.parse(params[:return_to]),
     :format => params[:format], :data => contacts)
+
   redirect params[:return_to]
 end
 
