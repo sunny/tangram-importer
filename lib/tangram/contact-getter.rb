@@ -46,7 +46,7 @@ module Tangram
       end
       def fetch
         Net::HTTP.start("www.google.com") { |http|
-          http.get("/m8/feeds/contacts/default/full",
+          http.get("/m8/feeds/contacts/default/full?max-results=10000",
             { 'Authorization' => "AuthSub token=\"#{@options[:token]}\"" }
           )
         }.body
